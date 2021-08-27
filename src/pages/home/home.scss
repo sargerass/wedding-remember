@@ -1,8 +1,13 @@
 .app-home {
+  position: relative;
   &__container {
-    padding: 15px;
+    padding: 15px 5px;
   }
   &__title {
     color: white;
+    font-size: 40px;
+    text-align: center;
+    padding-top: 15px;
+    font-family: var(--font-cursive);
   }
 }

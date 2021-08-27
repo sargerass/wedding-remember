@@ -3,5 +3,6 @@ export interface IPhoto {
   message: string;
   user: string;
   image: string;
+  avatar: string;
   path: string;
 }

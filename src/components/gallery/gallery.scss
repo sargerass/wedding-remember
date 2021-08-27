@@ -11,7 +11,21 @@
     }
   }
   
-  &__item {
-    
+  &__modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   padding: 30px;
+    &__image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      display: block;
+      border-radius: 50px;
+    }
+    &__message {
+      font-size: 30px;
+    }
   }
 }

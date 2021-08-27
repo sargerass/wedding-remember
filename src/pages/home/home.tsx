@@ -1,7 +1,7 @@
 import React from "react";
 import GalleryComponent from "../../components/gallery/gallery";
 import "./home.scss";
-import Typist from 'react-typist';
+
 interface IProps {
 }
 interface IState {
@@ -11,10 +11,9 @@ class HomePage extends React.Component<IProps, IState> {
     
     return (
       <div className="app-home">
-        <header>
-        <Typist className="app-home__title">
-          Guillermo y cris
-        </Typist>
+        <header className="app-home__title">
+          Cristina y Guillermo
+        
         </header>
         <div className="app-home__container">
           <GalleryComponent/>

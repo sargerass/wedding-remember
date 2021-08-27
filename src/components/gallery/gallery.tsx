@@ -6,18 +6,21 @@ import axios from "axios";
 import PhotoComponent from "../photo/photo";
 import ModalComponent from "../modal/modal";
 import { EnumModalTransition } from "../../core/enums";
+import Typist from 'react-typist';
 interface IProps {
 }
 interface IState {
   photos: IPhoto[];
   showModal: boolean;
+  photoCurrent: IPhoto  |undefined;
 }
 class GalleryComponent extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
       photos: [],
-      showModal: false
+      showModal: false,
+      photoCurrent: undefined
     }
     this._setup();
     
@@ -39,7 +42,8 @@ class GalleryComponent extends React.Component<IProps, IState> {
   private _showPhoto(photo:IPhoto): void {
     console.log('show', photo);
     this.setState({
-      showModal: true
+      showModal: true,
+      photoCurrent: photo
     });
     
   }
@@ -50,12 +54,28 @@ class GalleryComponent extends React.Component<IProps, IState> {
       </div>
     });;
   }
+  private _getContentMessage(): JSX.Element {
+    const { photoCurrent} = this.state;
+    if(!photoCurrent) {
+      return <div></div>;
+    }
+    return <div className="app-gallery__modal">
+      <img className="app-gallery__modal__image" src={photoCurrent.image} alt="" />
+      <div className="app-gallery__modal__message">
+        
+        <Typist className="" startDelay={1000}>
+        {photoCurrent.message}
+        </Typist>
+      </div>
+    </div>;
+  }
   render() {
     const {photos, showModal} = this.state;
     const data1 = [...photos];
     const data2 = data1.splice(0, Math.floor(data1.length/2));
     const listPhoto1 = this._getElements(data1);
     const listPhoto2 = this._getElements(data2);
+    const contentMessage = this._getContentMessage();
     return (
       <div className="app-gallery">
         <div className="app-gallery__container">
@@ -69,7 +89,7 @@ class GalleryComponent extends React.Component<IProps, IState> {
           </div>
         </div>
         <ModalComponent show={showModal} type={EnumModalTransition.Revealing} outModal={()=>this.setState({showModal: false})}>
-            Hola
+            {contentMessage}
         </ModalComponent>
       </div>
     )
