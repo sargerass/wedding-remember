@@ -11,6 +11,11 @@
     transition: all ease .5s;
     filter: grayscale(50%);
   }
+  &__loader {
+    background: rgba($color: #fff, $alpha: 1.0);
+    height: 100px;
+    animation: flickerAnimation 3s infinite;
+  }
   &:hover {
     .app-photo {
       &__image {
@@ -19,4 +24,9 @@
       }
     }
   }
+}
+@keyframes flickerAnimation {
+  0%   { opacity:1; }
+  50%  { opacity:.5; }
+  100% { opacity:1; }
 }

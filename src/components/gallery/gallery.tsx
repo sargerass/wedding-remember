@@ -5,8 +5,9 @@ import "./gallery.scss";
 import axios from "axios";
 import PhotoComponent from "../photo/photo";
 import ModalComponent from "../modal/modal";
-import { EnumModalTransition } from "../../core/enums";
+import { EnumModalTransition, EnumPhotoStatus } from "../../core/enums";
 import Typist from 'react-typist';
+import { isInViewport } from "../../core/helpers";
 interface IProps {
 }
 interface IState {
@@ -27,29 +28,55 @@ class GalleryComponent extends React.Component<IProps, IState> {
   }
   private _setup():void {
     this._showPhoto = this._showPhoto.bind(this);
+    document.addEventListener('scroll', () => this.componentDidUpdate() );
   }
+  
   public componentDidMount() {
     this._chargePhotos();
   }
   private _chargePhotos(): void {
     const URL = '/word-remenbers';
     axios.get(URL).then(res => {
-      this.setState({photos: res.data});
+      const photos = res.data.map((photo: IPhoto) => {
+        return  {
+          ...photo,
+          status: EnumPhotoStatus.Initial
+        }
+      })
+      this.setState({photos});
     }, error => {
       console.log('error', error);
     })
   }
   private _showPhoto(photo:IPhoto): void {
-    console.log('show', photo);
     this.setState({
       showModal: true,
       photoCurrent: photo
     });
     
   }
+  componentDidUpdate() {
+    const listItems = document.getElementsByClassName('app-gallery__item');
+    let hasChange = false;
+    for (let index = 0; index < listItems.length; index++) {
+      const element = listItems[index];
+      const inViewprt = isInViewport(element);
+      const id = element.getAttribute('id');
+      if(inViewprt) {
+        const photo = this.state.photos.find(photo => photo.id.toString() == id);
+        if(photo && photo.status === EnumPhotoStatus.Initial) {
+          photo.status = EnumPhotoStatus.InitialLoading;
+          hasChange = true;
+        }
+      }
+    }
+    if (hasChange) {
+      this.setState({photos: this.state.photos})
+    }
+  }
   private _getElements(photos: IPhoto[]): JSX.Element[] {
     return photos.map(photo => {
-      return <div className="app-gallery__item" key={photo.id}>
+      return <div className="app-gallery__item" key={photo.id} id={photo.id.toString()}>
         <PhotoComponent showPhoto={this._showPhoto} photo={photo} />
       </div>
     });;
@@ -76,6 +103,8 @@ class GalleryComponent extends React.Component<IProps, IState> {
     const listPhoto1 = this._getElements(data1);
     const listPhoto2 = this._getElements(data2);
     const contentMessage = this._getContentMessage();
+    
+    
     return (
       <div className="app-gallery">
         <div className="app-gallery__container">

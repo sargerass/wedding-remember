@@ -1,3 +1,5 @@
+import { EnumPhotoStatus } from "../enums";
+
 export interface IPhoto {
   id: number;
   message: string;
@@ -5,4 +7,5 @@ export interface IPhoto {
   image: string;
   avatar: string;
   path: string;
+  status: EnumPhotoStatus;
 }
