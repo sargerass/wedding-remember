@@ -1,0 +1,17 @@
+.app-gallery {
+  &__container {
+    max-width: 768px;
+    margin: auto;
+    &__row {
+      display: flex;
+      width: 100%;
+    }
+    &__column {
+      width: 50%;
+    }
+  }
+  
+  &__item {
+    
+  }
+}

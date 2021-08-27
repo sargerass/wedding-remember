@@ -1,0 +1,22 @@
+.app-photo {
+  margin: 10px 5px;
+  overflow: hidden;
+  .Typist  {
+    color: white;
+  }
+  
+  &__image {
+    width: 100%;
+    display: block;
+    transition: all ease .5s;
+    filter: grayscale(50%);
+  }
+  &:hover {
+    .app-photo {
+      &__image {
+        transform: scale(1.1);
+        filter: grayscale(0%);
+      }
+    }
+  }
+}
